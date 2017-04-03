@@ -5,7 +5,7 @@ import com.eviware.x.form.support.AField.AFieldType;
 import com.eviware.x.form.support.AForm;
 
 
-@AForm(name = "Search TestCases Using Tags", description = "Specify options for filtering the TestCase", icon="/src/main/java/res/Kevin_Pose-02.png")
+@AForm(name = "Search TestCases Using Tags", description = "Specify options for filtering the TestCase")
 public interface CustomForm {
 	
     @AField( description = "Specifies the projects in workspace", name = "Project", type = AFieldType.ENUMERATION )
