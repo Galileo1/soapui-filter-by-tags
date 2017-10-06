@@ -78,19 +78,6 @@ public class MyAction extends AbstractSoapUIAction<WorkspaceImpl> {
 			//this is done because couple of time dialog has throw ArrayOutOfBound Exception
 			UISupport.showErrorMessage("Unable to open plugin dialog. "+ e);
 		}
-    
-//    	File kevinPng;
-//		try {
-//			kevinPng = new File (MyAction.class.getResource("res/Kevin_Pose-02.png").);
-//			UISupport.showInfoMessage(kevinPng.getCanonicalPath());
-//			img  = kevinPng.getCanonicalPath();
-//			
-//		} catch (URISyntaxException e1) {//			
-//			e1.printStackTrace();
-//		} catch (IOException e) {
-//			
-//			e.printStackTrace();
-//		}    	
     	
     	//return if the dialog in canceled
     	if( dialog.getReturnValue() != XFormDialog.OK_OPTION )
@@ -230,13 +217,12 @@ public class MyAction extends AbstractSoapUIAction<WorkspaceImpl> {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void createListForTaggedCases(Set<String> userInputTags, Project project) {
-		//UISupport.prompt("UserInput",project.getName(),userInputTags.toArray());
+	private void createListForTaggedCases(Set<String> userInputTags, Project project) {		
 
 		List<? extends WsdlTestSuite> testSuiteList = (List<? extends WsdlTestSuite>) project.getTestSuiteList();
 		Set<String> userInputTagsValueSet = findValueSet(userInputTags,project);
-		if (userInputTagsValueSet.isEmpty()) {		
-			UISupport.prompt(project.getName() + " doesn't have selected Tags","",userInputTags.toArray());
+		if (userInputTagsValueSet.isEmpty()) {			
+			UISupport.showInfoMessage("Project " + project.getName() + " does not have following tags : " + String.join(",", userInputTags));
 			return;
 		}
 		
@@ -258,23 +244,21 @@ public class MyAction extends AbstractSoapUIAction<WorkspaceImpl> {
 			if (taggedResult.size() > 0) {
 				for (WsdlTestCase tc : markedTCList ) {
 					taggedResultname.add(tc.getName());
-				}
-			UISupport.prompt(project.getName() + " Search Results." ,"The following items are tagged as " + getTagForDisplay(eachUserInput).toUpperCase(), taggedResultname);
+				}			
 			
-			try {
-				Thread.sleep((long)(Math.random() * 3000));
-				UISupport.showDesktopPanel( new ModelItemListDesktopPanel( project.getName() + " Search Results." ,
-						"The following items are tagged as " + getTagForDisplay(eachUserInput).toUpperCase(),          
-						taggedResult.toArray(new ModelItem[taggedResult.size()] )));
-			} catch (Exception e){
-				
-			}		
+				try {					
+					UISupport.showDesktopPanel( new ModelItemListDesktopPanel( project.getName() + " Search Results." ,
+							"The following tests are tagged as " + getTagForDisplay(eachUserInput).toUpperCase(),          
+							taggedResult.toArray(new ModelItem[taggedResult.size()] )));
+				} catch (Exception e) {
+					
+				}		
 				
 				
 			} else {
 				
 				UISupport.showInfoMessage("Project " + project.getName() + " has "+ getTagForDisplay(eachUserInput).toUpperCase()+ " tag " +  
-						".But none of the testcases are marked with this tag.", "Errr...");
+						".But none of the test cases are marked with this tag.");
 				
 			}
 		}
